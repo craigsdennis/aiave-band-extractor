@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+@font-face {
+  font-family: 'Peridot';
+  src: url('/fonnts.com-Peridot_PE_Variable_Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
