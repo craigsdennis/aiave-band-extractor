@@ -4,18 +4,40 @@ import { Buffer } from "node:buffer";
 
 const app = new Hono<{ Bindings: Env }>();
 
+const EventSchema = z.object({
+  venue: z.string().meta({
+    description: "The name of the venue where the event is happening",
+  }),
+  location: z.string().meta({
+    description: "The name of the city where this is happening",
+  }),
+  date: z.string().meta({
+    description:
+      "The date and time when the event is happening in ISO-8601 format. Determine year based on day of the week and date if year is not provided.",
+  }),
+  isUpcoming: z.boolean().meta({
+    description: "Is this date in the future?",
+  }),
+});
+
 const OPTIONS = [
   {
     name: "Bands Only",
     schema: z.object({
-      bands: z.array(z.string().meta({ description: "The name of the band" }))
+      bands: z.array(z.string().meta({ description: "The name of the band" })),
+    }),
+  },
+  {
+    name: "Events",
+    schema: z.object({
+      events: z.array(EventSchema),
     }),
   },
 ];
 
 app.get("/api/schemas", async (c) => {
   const names = OPTIONS.map((option) => option.name);
-  return c.json({result: names});
+  return c.json({ result: names });
 });
 
 app.post("/api/extract", async (c) => {
@@ -34,18 +56,18 @@ app.post("/api/extract", async (c) => {
   const aBuffer = await file.arrayBuffer();
   const base64String = Buffer.from(aBuffer).toString("base64");
   const objectUrl = `data:${file.type};base64,${base64String}`;
-
-  console.log({schema: schemaOption.schema});
   const jsonSchema = z.toJSONSchema(schemaOption.schema);
-  console.log({ jsonSchema });
-
   const { response } = await c.env.AI.run(
     "@cf/meta/llama-4-scout-17b-16e-instruct",
     {
       messages: [
         {
           role: "system",
-          content: `You help extract information from concert posters`,
+          content: `You help extract information from concert posters.`,
+        },
+        {
+          role: "user",
+          content: `Today's is ${new Date().toString()}. Help me with this poster please`,
         },
         {
           role: "user",
@@ -59,13 +81,14 @@ app.post("/api/extract", async (c) => {
           ],
         },
       ],
+      max_tokens: 10000,
       response_format: {
         type: "json_schema",
         json_schema: jsonSchema,
       },
     }
   );
-  return c.json({schemaName, result: response, jsonSchema});
+  return c.json({ schemaName, result: response, jsonSchema });
 });
 
 export default app;

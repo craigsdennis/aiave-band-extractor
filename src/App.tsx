@@ -118,7 +118,7 @@ function App() {
       <div className="container mx-auto px-4 py-8">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-800 mb-4" style={{ fontFamily: 'Peridot, sans-serif' }}>
-            AI Avenue - 🎸 Band Poster Extractor
+            AI Avenue - <span style={{ color: '#FF6B3D' }}>🎸</span> Band Poster Extractor
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Upload a band poster image and use AI to extract structured information. 
@@ -250,7 +250,7 @@ function App() {
       <footer className="sticky bottom-0 bg-white border-t border-gray-200 py-4 mt-12">
         <div className="container mx-auto px-4 text-center space-y-2">
           <p className="text-sm text-gray-600">
-            Built with 🧡 on{' '}
+            Built with <span style={{ color: '#FF6B3D' }}>🧡</span> on{' '}
             <a href="https://developers.cloudflare.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">
               Cloudflare Workers
             </a>
