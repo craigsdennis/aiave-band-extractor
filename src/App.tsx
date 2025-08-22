@@ -264,7 +264,7 @@ function App() {
             </a>
           </p>
           <p className="text-sm text-gray-600">
-            <a href="https://github.com/craigsdennis" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">
+            <a href="https://github.com/craigsdennis/aiave-band-extractor" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">
               👀 the code
             </a>
           </p>
